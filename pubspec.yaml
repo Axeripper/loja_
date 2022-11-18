@@ -1,0 +1,38 @@
+name: loja
+description: A new Flutter project.
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  #build_runner: ^2.3.2
+  built_value: ^8.4.1
+  cupertino_icons: ^1.0.5
+  flutter:
+    sdk: flutter
+  flutter_svg: ^1.1.6
+  mysql1: ^0.17.1
+  #mysql_client: ^0.0.27
+  password: ^1.0.0
+  path: ^1.8.2
+  provider: ^4.0.4
+  response: ^1.0.0
+
+dev_dependencies:
+  flutter_lints: ^2.0.0
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/inicial.png
+    - assets/images/logo.png
+    - assets/images/search.png
+    - assets/images/bateria.png
+    - assets/images/seta.png
+    - assets/images/carrinho.png
