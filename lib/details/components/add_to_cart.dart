@@ -5,8 +5,8 @@ import '../../models/products.dart';
 
 class AddToCart extends StatelessWidget {
   const AddToCart({
-    Key key,
-    this.product,
+    Key? key,
+    required this.product,
   }) : super(key: key);
 
   final Product product;

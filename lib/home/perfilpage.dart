@@ -1,8 +1,12 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:loja/home/iniciar.dart';
+import 'package:http/http.dart' as http;
+
+import '../data/users.dart';
 
 class PerfilPage extends StatefulWidget {
-  const PerfilPage({Key key}) : super(key: key);
+  const PerfilPage({Key? key}) : super(key: key);
 
   @override
   State<PerfilPage> createState() => _PerfilPageState();
@@ -57,10 +61,12 @@ class _PerfilPageState extends State<PerfilPage> {
 
               buildTextField("nome", '', false),
               buildTextField("cpf", '', false),
-              buildTextField("email", '', false),
+              buildTextField("endereco", '', false),
+              buildTextField("cidade", '', false),
+              buildTextField("telefone", '', false),
               buildTextField("senha", '', true),
               const SizedBox(
-                height: 35,
+                height: 5,
               ),
               Row(
                 children: [
@@ -117,5 +123,16 @@ class _PerfilPageState extends State<PerfilPage> {
             )),
       ),
     );
+  }
+
+  Future<List<Customer>?> pegarPerfil() async {
+    var url = Uri.parse('http://10.0.2.2:3333/show');
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      List listaUsuario = json.decode(response.body);
+      return listaUsuario.map((json) => Customer.fromJson(json)).toList();
+    } else {
+      throw Exception('Erro não possivel carregar');
+    }
   }
 }

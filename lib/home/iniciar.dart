@@ -5,7 +5,7 @@ import 'package:loja/home/perfilpage.dart';
 import 'package:loja/home/containts.dart';
 
 class Iniciar extends StatelessWidget {
-  const Iniciar({Key key}) : super(key: key);
+  const Iniciar({Key? key}) : super(key: key);
   final padding = const EdgeInsets.symmetric(horizontal: 20);
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -38,9 +38,9 @@ void selectedItem(BuildContext context, int index) {
 }
 
 Widget buildMenuItem({
-  String text,
-  IconData icon,
-  VoidCallback onClicked,
+  required String text,
+  required IconData icon,
+  required VoidCallback onClicked,
 }) {
   const color = Colors.black;
   const hoverColor = Colors.black;
@@ -54,7 +54,7 @@ Widget buildMenuItem({
 }
 
 class NavigationDrawer extends StatelessWidget {
-  const NavigationDrawer({Key key}) : super(key: key);
+  const NavigationDrawer({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) => Drawer(
         child: SingleChildScrollView(

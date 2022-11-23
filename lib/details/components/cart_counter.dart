@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../home/containts.dart';
 
 class CartCounter extends StatefulWidget {
-  const CartCounter({Key key}) : super(key: key);
+  const CartCounter({Key? key}) : super(key: key);
 
   @override
   State<CartCounter> createState() => _CartCounterState();
@@ -43,7 +43,7 @@ class _CartCounterState extends State<CartCounter> {
     );
   }
 
-  SizedBox buildOutlineButton({IconData icon, Function press}) {
+  SizedBox buildOutlineButton({IconData? icon, required Function press}) {
     return SizedBox(
       width: 40,
       height: 32,

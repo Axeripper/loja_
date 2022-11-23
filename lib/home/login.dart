@@ -1,92 +1,54 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:loja/data/data_produtos_contants.dart';
-import 'package:loja/data/users.dart';
+import 'package:loja/home/cadastrousuarios.dart';
 import 'package:loja/widgets/palatte.dart';
-import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+
 import '../widgets/background_image.dart';
-import 'cadastrousuarios.dart';
+import 'iniciar.dart';
 
 class LoginPage extends StatefulWidget {
-  //Customer customer;
-  const LoginPage({Key key}) : super(key: key);
+  const LoginPage({Key? key}) : super(key: key);
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  //final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
-  TextEditingController email = TextEditingController();
-  TextEditingController senha = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _senha = TextEditingController();
 
   bool hidePassword = true;
-  //bool validateEmail = true;
-  //bool validateSenha = true;
-
-  List<Customer> customers = [];
-
-  var dao = Dao();
-
-  void openDialog(
-      BuildContext context, String dialogTitle, String dialogContext) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(dialogTitle),
-            content: Text(dialogContext),
-            actions: <Widget>[
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('back'),
-              ),
-            ],
-          );
-        });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
-    if (customers.isEmpty) {
-      customers = Provider.of<List<Customer>>(context);
-    }
     return Stack(
       children: [
         const BackgroundImage(),
         Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: Colors.transparent,
-          body: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListView(
-              children: [
+          body: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(children: <Widget>[
                 const SizedBox(
-                  height: 70,
+                  height: 100,
                 ),
-                Column(
-                  children: <Widget>[
-                    Container(
-                      margin:
-                          (const EdgeInsets.only(top: 05, left: 25, right: 25)),
-                      height: 150,
-                      child: const Center(
-                        child: Text(
-                          'Retro Music Shop',
-                          style: kHeading,
-                        ),
-                      ),
+                Container(
+                  margin: (const EdgeInsets.only(top: 05, left: 25, right: 25)),
+                  height: 150,
+                  child: const Center(
+                    child: Text(
+                      'Retro Music Shop',
+                      style: kHeading,
                     ),
-                  ],
+                  ),
                 ),
                 const SizedBox(
-                  height: 80,
+                  height: 30,
                 ),
                 Column(
                   children: [
@@ -96,8 +58,9 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: TextFormField(
-                        //controller: _emailController,
+                        controller: _email,
                         autofocus: true,
+                        keyboardType: TextInputType.emailAddress,
                         style:
                             const TextStyle(color: Colors.white, fontSize: 15),
                         decoration: const InputDecoration(
@@ -105,18 +68,18 @@ class _LoginPageState extends State<LoginPage> {
                           labelStyle: TextStyle(color: Colors.white),
                           border: InputBorder.none,
                         ),
-                        //onChanged: (value) => email = value,
-                        validator: (String value) {
-                          if (value == null || value.isEmpty) {
+                        validator: (String? email) {
+                          if (email == null || email.isEmpty) {
                             return 'Digite seu Email';
-                          } else {
-                            // email = note.email;
-                          }
+                          } else {}
                           return null;
                         },
                       ),
                     ),
                   ],
+                ),
+                const SizedBox(
+                  height: 10,
                 ),
                 const Divider(),
                 Container(
@@ -124,15 +87,15 @@ class _LoginPageState extends State<LoginPage> {
                     color: Colors.grey[600]?.withOpacity(0.5),
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: TextField(
+                  child: TextFormField(
                     //autofocus: true,
                     obscureText: hidePassword,
-                    controller: senha,
+                    controller: _senha,
+                    keyboardType: TextInputType.text,
                     style: const TextStyle(color: Colors.white, fontSize: 15),
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(),
                       labelText: "Senha",
-                      //labelStyle: TextStyle(color: Colors.white),
                       suffixIcon: IconButton(
                           icon: Icon(hidePassword
                               ? Icons.visibility_off
@@ -145,6 +108,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
                 const Divider(),
                 Container(
                   margin: (const EdgeInsets.only(top: 10, left: 25, right: 25)),
@@ -153,27 +119,28 @@ class _LoginPageState extends State<LoginPage> {
                   decoration: const BoxDecoration(
                       color: Color.fromARGB(255, 195, 118, 19),
                       borderRadius: BorderRadius.all(Radius.circular(32))),
-                  child: TextButton(
-                    onPressed: () {
-                      if (customers.any((item) => item.email == email.text)) {
-                        Customer customer = customers
-                            .firstWhere((item) => item.email == email.text);
-                        if (customer.passwordVerify(senha.text)) {
-                          openDialog(context, 'Useario encontrado', 'logado');
-                        } else {
-                          openDialog(context, 'invalido', 'não logado');
-                        }
-                      } else {
-                        openDialog(
-                            context, 'invalido', 'Verifique as credenciais');
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      FocusScopeNode currentFocus = FocusScope.of(context);
+                      //if (_formKey.currentState.validate()) {
+                      bool deuCerto = await login();
+                      if (!currentFocus.hasPrimaryFocus) {
+                        currentFocus.unfocus();
                       }
-                      // ignore: avoid_print
-                      print(email.text);
-                      // ignore: avoid_print
-                      print(senha.text);
-                      setState(() {
-                        hidePassword = !hidePassword;
-                      });
+                      if (deuCerto) {
+                        // ignore: use_build_context_synchronously
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Iniciar(),
+                          ),
+                        );
+                      } else {
+                        _senha.clear();
+                        // ignore: use_build_context_synchronously
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      }
+                      //}
                     },
                     child: const Center(
                       child: Text(
@@ -182,6 +149,9 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
+                ),
+                const SizedBox(
+                  height: 15,
                 ),
                 Container(
                   margin: (const EdgeInsets.only(top: 05, left: 25, right: 25)),
@@ -201,51 +171,58 @@ class _LoginPageState extends State<LoginPage> {
                   margin: (const EdgeInsets.only(top: 10, left: 25, right: 25)),
                   height: 40,
                   width: 500,
-                  child: Row(
-                    children: <Widget>[
-                      InkWell(
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(
-                                    builder: (context) => Cadastro()))
-                                .then((cadastro) {
-                              if (cadastro != null) {
-                                dao.insertData(cadastro as Customer).then((_) {
-                                  dao.db.getConnection().then((conn) {
-                                    String sql =
-                                        'Select id from usuario.customer where email = ?;';
-                                    conn.query(sql, [cadastro.email]).then(
-                                        (results) {
-                                      for (var row in results) {
-                                        int id = row[0];
-                                        cadastro.id = id;
-                                        setState(() {
-                                          cadastro.add(cadastro);
-                                        });
-                                      }
-                                    });
-                                  });
-                                });
-                              }
-                            });
-                          },
-                          child: const Center(
-                            child: Text(
-                              'Não tenho uma conta. Toque aqui!',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const Cadastro(),
                         ),
+                      );
+                    },
+                    child: const Center(
+                      child: Text(
+                        'Não tenho uma conta! clique aqui',
+                        style: TextStyle(color: Colors.white),
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ],
+              ]),
             ),
           ),
         ),
       ],
     );
   }
+
+  final snackBar = const SnackBar(
+    content: Text(
+      'e-mail ou senha são invalidos',
+      textAlign: TextAlign.center,
+    ),
+    backgroundColor: Colors.redAccent,
+  );
+
+  Future<bool> login() async {
+    var url = Uri.parse('http://10.0.2.2:3333/login');
+    var resposta = await http.post(
+      url,
+      body: {
+        'email': _email.text,
+        'password': _senha.text,
+      },
+    );
+    if (resposta.statusCode == 200) {
+      // ignore: avoid_print
+      print(jsonDecode(resposta.body)['token']);
+      return true;
+    } else {
+      // ignore: avoid_print
+      print(jsonDecode(resposta.body));
+      return false;
+    }
+  }
 }
+
+//node ace serve --watch
