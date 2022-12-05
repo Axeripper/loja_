@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-
 import '../../home/containts.dart';
-import '../../models/products.dart';
 
+// ignore: must_be_immutable
 class ColorAndSize extends StatelessWidget {
-  const ColorAndSize({
+  ColorAndSize({
     Key? key,
     required this.product,
   }) : super(key: key);
 
-  final Product product;
+  Map<String, dynamic> product;
 
   @override
   Widget build(BuildContext context) {
@@ -33,23 +32,46 @@ class ColorAndSize extends StatelessWidget {
             ],
           ),
         ),
+        Size(product: product),
+      ],
+    );
+  }
+}
+
+class Size extends StatefulWidget {
+  const Size({
+    Key? key,
+    required this.product,
+  }) : super(key: key);
+
+  final Map<String, dynamic> product;
+
+  @override
+  State<Size> createState() => _SizeState();
+}
+
+class _SizeState extends State<Size> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
         Expanded(
           child: RichText(
-            text: TextSpan(
-              style: const TextStyle(color: kTextColor),
+            text: const TextSpan(
+              style: TextStyle(color: kTextColor),
               children: [
-                const TextSpan(text: "Size\n"),
-                TextSpan(
-                  text: "${product.size} cm",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline5
-                      ?.copyWith(fontWeight: FontWeight.bold),
-                )
+                TextSpan(text: "Size\n"),
               ],
             ),
           ),
         ),
+        Text(
+          "${widget.product['size']} cm",
+          style: Theme.of(context)
+              .textTheme
+              .headline5
+              ?.copyWith(fontWeight: FontWeight.bold),
+        )
       ],
     );
   }

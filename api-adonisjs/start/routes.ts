@@ -24,19 +24,12 @@ Route.get('/', async () => {
   return { hello: 'world' }
 })
 
+Route.get('/showUsuarios', 'UsersController.index')
 Route.post('/cadastro', 'UsersController.store')
 Route.resource('procurar', 'UsersController.show')
 Route.post('login', 'UsersController.login')
-
-
-/*async ({auth, request, response}) => {
-  const email = request.input('email')
-  const password = request.input('password')
-
-  try{
-    const token = await auth.use('api').attempt(email, password)
-    return token
-  }catch{
-    return response.unauthorized('Invalid credentials')
-  }
-})*/
+Route.get('showprodutos', 'ProdutosController.show_produto')
+Route.resource('/show', 'ProdutosController')
+Route.post('file-upload', 'ProdutosController.upload')
+Route.post('/cadastro_produto', 'ProdutosController.store')
+Route.get('showall', 'ProdutosController.index')

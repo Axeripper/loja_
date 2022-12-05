@@ -1,8 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:loja/home/components/body.dart';
+import 'package:loja/details/components/pesquisa.dart';
+import 'package:loja/details/components/components/body_widget.dart';
 import 'package:loja/home/login.dart';
 import 'package:loja/home/perfilpage.dart';
 import 'package:loja/home/containts.dart';
+import 'package:http/http.dart' as http;
+
+import '../data/users.dart';
 
 class Iniciar extends StatelessWidget {
   const Iniciar({Key? key}) : super(key: key);
@@ -16,8 +22,11 @@ class Iniciar extends StatelessWidget {
           elevation: 0,
           actions: <Widget>[
             IconButton(
-                icon: Image.asset("assets/images/search.png"),
-                onPressed: () {}),
+              onPressed: () {
+                showSearch(context: context, delegate: PesquisaPage());
+              },
+              icon: const Icon(Icons.search_rounded),
+            ),
             const SizedBox(
               width: kDefaultPaddin / 2,
             )
@@ -53,8 +62,22 @@ Widget buildMenuItem({
   );
 }
 
-class NavigationDrawer extends StatelessWidget {
+class NavigationDrawer extends StatefulWidget {
   const NavigationDrawer({Key? key}) : super(key: key);
+
+  @override
+  State<NavigationDrawer> createState() => _NavigationDrawerState();
+}
+
+class _NavigationDrawerState extends State<NavigationDrawer> {
+  late Future<List<Customer>> usuarios;
+
+  @override
+  void initState() {
+    super.initState();
+    usuarios = pegarUsuario();
+  }
+
   @override
   Widget build(BuildContext context) => Drawer(
         child: SingleChildScrollView(
@@ -102,23 +125,24 @@ class NavigationDrawer extends StatelessWidget {
                   /*ListTile(
                     leading: Icon(Icons.supervised_user_circle),
                     //title: Text('Home'),
-                    /*onTap: () {
+                    onTap: () {
                       Navigator.pop(context);
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => const Iniciar(),
                         ),
                       );
-                    },*/
-                  ),*/
-                  //Icon(ico)
+                    },
+                  ),
+                  //Icon(ico)*/
+
                   SizedBox(height: 12),
                   Text('Leonardo',
                       style: TextStyle(fontSize: 28, color: Colors.white)),
                   Text(
                     'Leo_r1089@hotmail.com',
                     style: TextStyle(fontSize: 16, color: Colors.white),
-                  )
+                  ),
                 ],
               ),
             )),
@@ -164,4 +188,14 @@ class NavigationDrawer extends StatelessWidget {
               }),
         ],
       );
+
+  Future<List<Customer>> pegarUsuario() async {
+    var uri = Uri.parse('http://10.0.2.2:3333/showUsuarios');
+    var response = await http.get(uri);
+    if (response.statusCode == 200) {
+      List list = json.decode(response.body);
+      return list.map((json) => Customer.fromJson(json)).toList();
+    }
+    throw Exception('Erro ao carregar!');
+  }
 }

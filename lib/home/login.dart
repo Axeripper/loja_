@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:loja/home/cadastrousuarios.dart';
@@ -91,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                     //autofocus: true,
                     obscureText: hidePassword,
                     controller: _senha,
-                    keyboardType: TextInputType.text,
+                    keyboardType: TextInputType.visiblePassword,
                     style: const TextStyle(color: Colors.white, fontSize: 15),
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(),
@@ -128,7 +130,6 @@ class _LoginPageState extends State<LoginPage> {
                         currentFocus.unfocus();
                       }
                       if (deuCerto) {
-                        // ignore: use_build_context_synchronously
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
@@ -137,7 +138,6 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       } else {
                         _senha.clear();
-                        // ignore: use_build_context_synchronously
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       }
                       //}
@@ -204,22 +204,32 @@ class _LoginPageState extends State<LoginPage> {
     backgroundColor: Colors.redAccent,
   );
 
-  Future<bool> login() async {
+  login() async {
     var url = Uri.parse('http://10.0.2.2:3333/login');
-    var resposta = await http.post(
+    var response = await http.post(
       url,
       body: {
         'email': _email.text,
         'password': _senha.text,
       },
     );
-    if (resposta.statusCode == 200) {
-      // ignore: avoid_print
-      print(jsonDecode(resposta.body)['token']);
+    if (response.statusCode == 200) {
+      print(jsonDecode(response.body)['token']);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        backgroundColor: Colors.grey,
+        content: Text("Usuario Logado com sucesso!!"),
+        behavior: SnackBarBehavior.floating,
+      ));
       return true;
     } else {
-      // ignore: avoid_print
-      print(jsonDecode(resposta.body));
+      //print(jsonDecode(response.body));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.redAccent,
+          content: Text("E-mail ou senha inválidos"),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
       return false;
     }
   }

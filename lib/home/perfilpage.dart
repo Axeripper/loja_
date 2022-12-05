@@ -14,6 +14,16 @@ class PerfilPage extends StatefulWidget {
 
 class _PerfilPageState extends State<PerfilPage> {
   // final padding = const EdgeInsets.symmetric(horizontal: 20);
+  late Future<List<Customer>> usuarios;
+
+  @override
+  void initState() {
+    super.initState();
+    usuarios = pegarUsuario();
+  }
+
+  late ListTile nome;
+
   bool showSenha = false;
   @override
   Widget build(BuildContext context) {
@@ -48,43 +58,66 @@ class _PerfilPageState extends State<PerfilPage> {
           onTap: () {
             FocusScope.of(context).unfocus();
           },
-          child: ListView(
-            children: [
+          child: FutureBuilder<List<Customer>>(
+            future: usuarios,
+            builder: (context, snapshot) {
               const Text(
                 "Editar Perfil",
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-              ),
+              );
               const SizedBox(
                 height: 35,
-              ),
-              //NoteDeta noteId: note.id!
-
-              buildTextField("nome", '', false),
-              buildTextField("cpf", '', false),
-              buildTextField("endereco", '', false),
-              buildTextField("cidade", '', false),
-              buildTextField("telefone", '', false),
-              buildTextField("senha", '', true),
-              const SizedBox(
-                height: 5,
-              ),
+              );
+              if (snapshot.hasData) {
+                return ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    Customer usuario = snapshot.data![index];
+                    return ListView(
+                      children: [
+                        nome = ListTile(title: Text(usuario.nome!)),
+                        ListTile(title: Text(usuario.nome!)),
+                      ],
+                    );
+                  },
+                );
+              }
+              /*buildTextField("nome", nome, false);
+              buildTextField("cpf", '', false);
+              buildTextField("endereco", '', false);
+              buildTextField("cidade", '', false);
+              buildTextField("telefone", '', false);
+              buildTextField("senha", '', true);*/
               Row(
                 children: [
-                  OutlinedButton(
-                    //padding: const EdgeInsets.symmetric(horizontal: 50),
-                    //shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                    onPressed: () {},
-                    child: const Text(
-                      "Cancelar",
-                      style: TextStyle(
-                          fontSize: 14,
-                          letterSpacing: 2.2,
-                          color: Colors.black),
+                  Container(
+                    margin:
+                        (const EdgeInsets.only(top: 0, left: 25, right: 25)),
+                    height: 50,
+                    width: 300,
+                    decoration: const BoxDecoration(
+                        color: Color.fromARGB(255, 195, 118, 19),
+                        borderRadius: BorderRadius.all(Radius.circular(32))),
+                    child: TextButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.resolveWith<Color?>((states) {
+                          return const Color.fromARGB(255, 195, 118, 19);
+                        }),
+                      ),
+                      onPressed: () async {},
+                      child: const Center(
+                        child: Text(
+                          'Atualizar',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
                     ),
                   ),
                 ],
-              )
-            ],
+              );
+              return Text(snapshot.error.toString());
+            },
           ),
         ),
       ),
@@ -125,14 +158,13 @@ class _PerfilPageState extends State<PerfilPage> {
     );
   }
 
-  Future<List<Customer>?> pegarPerfil() async {
-    var url = Uri.parse('http://10.0.2.2:3333/show');
-    var response = await http.get(url);
+  Future<List<Customer>> pegarUsuario() async {
+    var uri = Uri.parse('http://10.0.2.2:3333/showUsuarios');
+    var response = await http.get(uri);
     if (response.statusCode == 200) {
-      List listaUsuario = json.decode(response.body);
-      return listaUsuario.map((json) => Customer.fromJson(json)).toList();
-    } else {
-      throw Exception('Erro não possivel carregar');
+      List list = json.decode(response.body);
+      return list.map((json) => Customer.fromJson(json)).toList();
     }
+    throw Exception('Erro ao carregar!');
   }
 }

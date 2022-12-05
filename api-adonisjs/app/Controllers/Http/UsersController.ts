@@ -24,7 +24,7 @@ export default class UsersController {
     return user
   }
 
-  public async show({request}: HttpContextContract) {
+  public async showUsers({request}: HttpContextContract) {
     const userid = request.param('id')
     const user = await User.findOrFail(userid)
     return user

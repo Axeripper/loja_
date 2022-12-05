@@ -188,6 +188,7 @@ class _CadastroState extends State<Cadastro> {
                   child: TextFormField(
                     controller: _email,
                     autofocus: true,
+                    keyboardType: TextInputType.emailAddress,
                     style: const TextStyle(color: Colors.white, fontSize: 14),
                     decoration: const InputDecoration(
                       labelText: "E-mail",
@@ -211,6 +212,7 @@ class _CadastroState extends State<Cadastro> {
                   child: TextFormField(
                     controller: _senha,
                     autofocus: true,
+                    keyboardType: TextInputType.visiblePassword,
                     style: const TextStyle(color: Colors.white, fontSize: 14),
                     decoration: const InputDecoration(
                       labelText: "Senha:",

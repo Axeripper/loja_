@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-
 import '../../home/containts.dart';
-import '../../models/products.dart';
 
+// ignore: must_be_immutable
 class AddToCart extends StatelessWidget {
-  const AddToCart({
+  AddToCart({
     Key? key,
     required this.product,
   }) : super(key: key);
 
-  final Product product;
+  Map<String, dynamic> product;
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +22,12 @@ class AddToCart extends StatelessWidget {
             width: 58,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(18),
-              border: Border.all(color: product.color),
+              border: Border.all(color: Colors.orange),
             ),
             child: IconButton(
               icon: Image.asset(
                 "assets/images/carrinho.png",
-                color: product.color,
+                color: Colors.orange,
               ),
               onPressed: () {},
             ),

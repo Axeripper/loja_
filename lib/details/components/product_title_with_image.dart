@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:loja/home/containts.dart';
 
-import '../../models/products.dart';
-
-class ProductTitleWithImage extends StatelessWidget {
-  const ProductTitleWithImage({
+// ignore: must_be_immutable
+class ProductTitleWithImage extends StatefulWidget {
+  Map<String, dynamic> product;
+  ProductTitleWithImage({
     Key? key,
     required this.product,
   }) : super(key: key);
 
-  final Product product;
+  @override
+  State<ProductTitleWithImage> createState() => _ProductTitleWithImageState();
+}
 
+class _ProductTitleWithImageState extends State<ProductTitleWithImage> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -22,7 +25,7 @@ class ProductTitleWithImage extends StatelessWidget {
             "Instrumento",
             style: TextStyle(color: Colors.white),
           ),
-          Text(product.title,
+          Text(widget.product['nome'],
               style: Theme.of(context)
                   .textTheme
                   .headline4
@@ -35,7 +38,7 @@ class ProductTitleWithImage extends StatelessWidget {
                   children: [
                     const TextSpan(text: 'Preço\n'),
                     TextSpan(
-                      text: "\$${product.price}",
+                      text: "\$${widget.product['preco']}",
                       style: Theme.of(context).textTheme.headline4?.copyWith(
                           color: Colors.white, fontWeight: FontWeight.bold),
                     ),
@@ -45,11 +48,10 @@ class ProductTitleWithImage extends StatelessWidget {
               const SizedBox(width: kDefaultPaddin),
               Expanded(
                 child: Hero(
-                  tag: "${product.id}",
-                  child: Image.asset(
-                    product.image,
-                    fit: BoxFit.fitWidth,
-                  ),
+                  tag: "${widget.product['id']}",
+                  child: Image.asset('assets/images/bateria.png'
+                      //fit: BoxFit.fitWidth,
+                      ),
                 ),
               )
             ],
