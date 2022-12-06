@@ -10,14 +10,15 @@ export default class ProdutosController {
   public async create({}: HttpContextContract) {}
 
   public async store({request}: HttpContextContract) {
-    const body = request.only(['nome', 'size', 'tipo','preco','descricao','color'])
+    const body = request.only(['nome', 'size', 'tipo','preco','descricao','color','image'])
     const produto = await Produto.create({
       nome: body.nome,
       size: body.size,
       tipo: body.tipo,
       preco: body.preco,
       descricao: body.descricao,
-      color: body.color
+      color: body.color,
+      image: body.image
     })
     return produto
   }

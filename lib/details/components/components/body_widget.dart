@@ -1,8 +1,8 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:loja/details/components/components/details_screen.dart';
 import 'package:loja/home/containts.dart';
-import 'package:http/http.dart' as http;
+import 'package:loja/models/products.dart';
+import '../../../models/products.api.dart';
 import 'item_card.dart';
 
 class Body extends StatefulWidget {
@@ -13,12 +13,20 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  late Future<List> produtcs;
+  late final List<Product> product;
+  bool isLoading = true;
 
   @override
   initState() {
     super.initState();
-    produtcs = pegarproduto();
+    getProdutos();
+  }
+
+  Future<void> getProdutos() async {
+    product = await ProductApi.pegarproduto();
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -30,52 +38,32 @@ class _BodyState extends State<Body> {
           children: const [
             Icon(Icons.store),
             SizedBox(width: 10),
-            Text('lojaa')
+            Text('loja')
           ],
         ),
       ),*/
-      //const Categories(),
-      body: FutureBuilder<List>(
-          future: produtcs,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return GridView.builder(
-                shrinkWrap: true,
-                itemCount: snapshot.data!.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: kDefaultPaddin,
-                  crossAxisSpacing: kDefaultPaddin,
-                  childAspectRatio: 3 / 4,
-                ),
-                itemBuilder: (context, index) => ItemCard(
-                  product: snapshot.data![index],
-                  press: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DetailsScreen(
-                                product: snapshot.data![index],
-                              ))),
-                ),
-              );
-            } else if (snapshot.hasError) {
-              return const Center(
-                child: Text('Erro ao carregar os dados'),
-              );
-            }
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : GridView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: kDefaultPaddin),
+              shrinkWrap: true,
+              itemCount: product.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: kDefaultPaddin,
+                crossAxisSpacing: kDefaultPaddin,
+                childAspectRatio: 0.75,
+              ),
+              itemBuilder: (context, index) => ItemCard(
+                product: product[index],
+                press: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DetailsScreen(
+                              product: product[index],
+                            ))),
+              ),
+            ),
     );
-  }
-
-  Future<List> pegarproduto() async {
-    var uri = Uri.parse('http://10.0.2.2:3333/showall');
-    var response = await http.get(uri);
-    if (response.statusCode == 200) {
-      return json.decode(response.body).map((produto) => produto).toList();
-    }
-    throw Exception('Erro ao carregar!');
   }
 }

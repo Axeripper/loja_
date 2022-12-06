@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:loja/details/components/body.dart';
+import 'package:loja/models/products.dart';
 
-// ignore: must_be_immutable
 class DetailsScreen extends StatelessWidget {
-  Map<String, dynamic> product;
-  DetailsScreen({Key? key, required this.product}) : super(key: key);
+  final Product product;
+  const DetailsScreen({Key? key, required this.product}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     product;
@@ -21,7 +21,7 @@ class DetailsScreen extends StatelessWidget {
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.blue,
-      elevation: 0,
+      elevation: 1,
       leading: IconButton(
         icon: Image.asset(
           'assets/images/seta.png',

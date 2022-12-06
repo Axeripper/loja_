@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:loja/home/containts.dart';
 
-// ignore: must_be_immutable
-class ProductTitleWithImage extends StatefulWidget {
-  Map<String, dynamic> product;
-  ProductTitleWithImage({
+import '../../models/products.dart';
+
+class ProductTitleWithImage extends StatelessWidget {
+  final Product product;
+  const ProductTitleWithImage({
     Key? key,
     required this.product,
   }) : super(key: key);
 
-  @override
-  State<ProductTitleWithImage> createState() => _ProductTitleWithImageState();
-}
-
-class _ProductTitleWithImageState extends State<ProductTitleWithImage> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -25,7 +21,7 @@ class _ProductTitleWithImageState extends State<ProductTitleWithImage> {
             "Instrumento",
             style: TextStyle(color: Colors.white),
           ),
-          Text(widget.product['nome'],
+          Text(product.nome,
               style: Theme.of(context)
                   .textTheme
                   .headline4
@@ -38,7 +34,7 @@ class _ProductTitleWithImageState extends State<ProductTitleWithImage> {
                   children: [
                     const TextSpan(text: 'Preço\n'),
                     TextSpan(
-                      text: "\$${widget.product['preco']}",
+                      text: "\$${product.preco}",
                       style: Theme.of(context).textTheme.headline4?.copyWith(
                           color: Colors.white, fontWeight: FontWeight.bold),
                     ),
@@ -48,10 +44,11 @@ class _ProductTitleWithImageState extends State<ProductTitleWithImage> {
               const SizedBox(width: kDefaultPaddin),
               Expanded(
                 child: Hero(
-                  tag: "${widget.product['id']}",
-                  child: Image.asset('assets/images/bateria.png'
-                      //fit: BoxFit.fitWidth,
-                      ),
+                  tag: "${product.id}",
+                  child: Image.asset(
+                    product.image,
+                    fit: BoxFit.fitWidth,
+                  ),
                 ),
               )
             ],

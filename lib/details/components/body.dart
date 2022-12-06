@@ -1,34 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:loja/details/components/product_title_with_image.dart';
 import 'package:loja/home/containts.dart';
+import 'package:loja/models/products.dart';
 import 'add_to_cart.dart';
 import 'cart_counter.dart';
 import 'color_and_size.dart';
 import 'description.dart';
 
-// ignore: must_be_immutable
 class Body extends StatelessWidget {
-  Map<String, dynamic> product;
-  Body({Key? key, required this.product}) : super(key: key);
+  final Product product;
+  const Body({Key? key, required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // Size size = Productest(context).size;
-    //Size size = MediaQuery.of(context).size.height * 0.6;
+    Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
           SizedBox(
-            height: 2,
+            height: size.height,
             child: Stack(
               children: <Widget>[
                 Container(
-                  margin: const EdgeInsets.only(top: 2 * 0.6),
-                  padding: const EdgeInsets.only(
-                    top: 2 * 0.6,
+                  margin: EdgeInsets.only(top: size.height * 0.3),
+                  padding: EdgeInsets.only(
+                    top: size.height * 0.12,
                     left: kDefaultPaddin,
                     right: kDefaultPaddin,
                   ),
-                  height: 500,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -48,8 +47,7 @@ class Body extends StatelessWidget {
                     ],
                   ),
                 ),
-                /*ProductTitleWithImage(
-                        //product: product['assets/images/bateria.png'])*/
+                ProductTitleWithImage(product: product),
               ],
             ),
           ),

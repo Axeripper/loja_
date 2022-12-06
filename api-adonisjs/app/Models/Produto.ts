@@ -22,7 +22,9 @@ export default class Produto extends BaseModel {
 
   @column()
   public color: string
-  
+
+  @column()
+  public image: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

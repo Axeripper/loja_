@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:loja/models/products.dart';
 import '../../home/containts.dart';
 
-// ignore: must_be_immutable
 class ColorAndSize extends StatelessWidget {
-  ColorAndSize({
+  const ColorAndSize({
     Key? key,
     required this.product,
   }) : super(key: key);
 
-  Map<String, dynamic> product;
+  final Product product;
 
   @override
   Widget build(BuildContext context) {
@@ -32,46 +32,23 @@ class ColorAndSize extends StatelessWidget {
             ],
           ),
         ),
-        Size(product: product),
-      ],
-    );
-  }
-}
-
-class Size extends StatefulWidget {
-  const Size({
-    Key? key,
-    required this.product,
-  }) : super(key: key);
-
-  final Map<String, dynamic> product;
-
-  @override
-  State<Size> createState() => _SizeState();
-}
-
-class _SizeState extends State<Size> {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
         Expanded(
           child: RichText(
-            text: const TextSpan(
-              style: TextStyle(color: kTextColor),
+            text: TextSpan(
+              style: const TextStyle(color: kTextColor),
               children: [
-                TextSpan(text: "Size\n"),
+                const TextSpan(text: "Size\n"),
+                TextSpan(
+                  text: "${product.size} cm",
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline5
+                      ?.copyWith(fontWeight: FontWeight.bold),
+                )
               ],
             ),
           ),
         ),
-        Text(
-          "${widget.product['size']} cm",
-          style: Theme.of(context)
-              .textTheme
-              .headline5
-              ?.copyWith(fontWeight: FontWeight.bold),
-        )
       ],
     );
   }
@@ -83,7 +60,6 @@ class ColorDot extends StatelessWidget {
   const ColorDot({
     Key? key,
     required this.color,
-    // by default isSelected is false
     this.isSelected = false,
   }) : super(key: key);
 

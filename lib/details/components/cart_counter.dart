@@ -18,11 +18,11 @@ class _CartCounterState extends State<CartCounter> {
         buildOutlineButton(
           icon: Icons.remove,
           press: () {
-            setState(() {
-              if (numOfItem > 1) {
+            if (numOfItem > 1) {
+              setState(() {
                 numOfItem--;
-              }
-            });
+              });
+            }
           },
         ),
         Padding(

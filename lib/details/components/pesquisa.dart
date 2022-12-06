@@ -60,10 +60,10 @@ class PesquisaPage extends SearchDelegate<String> {
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  //leading: Image.network(snapshot.data![index]['foto']),
+                  leading: Image.asset(snapshot.data![index]['image']),
                   title: Text(snapshot.data![index]['nome']),
                   subtitle: Text(snapshot.data![index]['tipo']),
-                  trailing: Text(snapshot.data![index]['preco']),
+                  trailing: Text('R\$${snapshot.data![index]['preco']}'),
                   onTap: () {
                     query = snapshot.data![index]['id'];
                     const NavigationDrawer();

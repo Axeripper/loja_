@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:loja/models/products.dart';
 import '../../home/containts.dart';
 
-// ignore: must_be_immutable
 class Description extends StatelessWidget {
-  Description({
+  const Description({
     Key? key,
     required this.product,
   }) : super(key: key);
 
-  Map<String, dynamic> product;
-
+  final Product product;
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: kDefaultPaddin),
       child: Text(
-        product['descricao'],
+        product.descricao,
         style: const TextStyle(height: 1.5),
       ),
     );

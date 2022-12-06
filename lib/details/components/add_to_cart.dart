@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:loja/models/products.dart';
 import '../../home/containts.dart';
 
-// ignore: must_be_immutable
 class AddToCart extends StatelessWidget {
-  AddToCart({
+  const AddToCart({
     Key? key,
     required this.product,
   }) : super(key: key);
 
-  Map<String, dynamic> product;
-
+  final Product product;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -36,10 +35,12 @@ class AddToCart extends StatelessWidget {
             child: SizedBox(
               height: 50,
               child: ElevatedButton(
-                /*shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18),
+                  ),
                 ),
-                color: product.color,*/
+                //color: Text(product.color),
                 onPressed: () {},
                 child: Text(
                   "Comprar agora".toUpperCase(),
