@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:loja/details/components/components/details_screen.dart';
 import 'package:loja/home/containts.dart';
 import 'package:loja/models/products.dart';
+import '../../../data/services/pegarusuarioapi.dart';
+import '../../../data/users.dart';
 import '../../../models/products.api.dart';
 import 'item_card.dart';
 
@@ -15,11 +17,22 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   late final List<Product> product;
   bool isLoading = true;
-
+  bool isLoadinguser = true;
+  late final List<Customer> customer;
   @override
   initState() {
     super.initState();
     getProdutos();
+    getUsers();
+  }
+
+  Future<void> getUsers() async {
+    customer = await PegarUsersapi.pegarUsuario();
+    // ignore: avoid_print
+    print(customer);
+    setState(() {
+      isLoadinguser = false;
+    });
   }
 
   Future<void> getProdutos() async {
@@ -55,15 +68,14 @@ class _BodyState extends State<Body> {
                 childAspectRatio: 0.75,
               ),
               itemBuilder: (context, index) => ItemCard(
-                product: product[index],
-                press: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => DetailsScreen(
-                              product: product[index],
-                            ))),
-              ),
-            ),
+                  product: product[index],
+                  press: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DetailsScreen(
+                                product: product[index],
+                                customer: customer.first,
+                              ))))),
     );
   }
 }

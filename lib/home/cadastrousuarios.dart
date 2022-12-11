@@ -232,7 +232,7 @@ class _CadastroState extends State<Cadastro> {
                   constraints:
                       //const EdgeInsets.only(top: 30,left: 30,right: 25),
                       const BoxConstraints.tightFor(
-                    width: 100,
+                    width: 160,
                     height: 50,
                   ),
                   child: ElevatedButton.icon(
@@ -246,7 +246,6 @@ class _CadastroState extends State<Cadastro> {
                       label: const Text('Cadastrar'),
                       onPressed: () async {
                         FocusScopeNode currentFocus = FocusScope.of(context);
-                        //if (_formKey.currentState.validate()) {
                         bool deuCerto = await cadastro();
                         if (!currentFocus.hasPrimaryFocus) {
                           currentFocus.unfocus();
@@ -264,11 +263,10 @@ class _CadastroState extends State<Cadastro> {
                           // ignore: use_build_context_synchronously
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         }
-                        //}
                       }),
                 ),
                 const Divider(),
-                ConstrainedBox(
+                /*ConstrainedBox(
                   constraints: const BoxConstraints.tightFor(
                     width: 100,
                     height: 20,
@@ -288,7 +286,7 @@ class _CadastroState extends State<Cadastro> {
                       ),
                     ),
                   ),
-                ),
+                ),*/
               ],
             ),
           ),
@@ -314,7 +312,7 @@ class _CadastroState extends State<Cadastro> {
       'cidade': _cidade.text,
       'telefone': _telefone.text,
       'email': _email.text,
-      'senha': _senha.text
+      'password': _senha.text
     });
     if (resposta.statusCode == 200) {
       // ignore: avoid_print

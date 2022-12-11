@@ -24,10 +24,19 @@ export default class UsersController {
     return user
   }
 
-  public async showUsers({request}: HttpContextContract) {
+  public async show_Users({request}: HttpContextContract) {
     const userid = request.param('id')
     const user = await User.findOrFail(userid)
     return user
+  }
+
+  public async showUsers({request}: HttpContextContract) {
+
+    const produto = await User.query().whereRaw(
+      'MATCH(email) AGAINST(?)',
+      request.input('search')
+    )
+    return produto
   }
 
   public async login({auth, request, response}: HttpContextContract) {

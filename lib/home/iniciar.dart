@@ -1,17 +1,22 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:loja/details/components/pesquisa.dart';
 import 'package:loja/details/components/components/body_widget.dart';
 import 'package:loja/home/login.dart';
 import 'package:loja/home/perfilpage.dart';
 import 'package:loja/home/containts.dart';
-import 'package:http/http.dart' as http;
 
+import '../data/services/pegarusuarioapi.dart';
 import '../data/users.dart';
 
-class Iniciar extends StatelessWidget {
+class Iniciar extends StatefulWidget {
+  // final Token token;
   const Iniciar({Key? key}) : super(key: key);
+
+  @override
+  State<Iniciar> createState() => _IniciarState();
+}
+
+class _IniciarState extends State<Iniciar> {
   final padding = const EdgeInsets.symmetric(horizontal: 20);
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -36,7 +41,7 @@ class Iniciar extends StatelessWidget {
       );
 }
 
-void selectedItem(BuildContext context, int index) {
+/*void selectedItem(BuildContext context, int index) {
   switch (index) {
     case 0:
       Navigator.of(context).push(
@@ -44,7 +49,7 @@ void selectedItem(BuildContext context, int index) {
       );
       break;
   }
-}
+}*/
 
 Widget buildMenuItem({
   required String text,
@@ -70,12 +75,21 @@ class NavigationDrawer extends StatefulWidget {
 }
 
 class _NavigationDrawerState extends State<NavigationDrawer> {
-  late Future<List<Customer>> usuarios;
-
+  late final List<Customer> customer;
+  bool isLoading = true;
   @override
-  void initState() {
+  initState() {
     super.initState();
-    usuarios = pegarUsuario();
+    getUsers();
+  }
+
+  Future<void> getUsers() async {
+    customer = await PegarUsersapi.pegarUsuario();
+    // ignore: avoid_print
+    print(customer);
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -98,7 +112,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
               Navigator.pop(context);
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => const PerfilPage(),
+                  builder: (context) => PerfilPage(customer: customer.first),
                 ),
               );
             },
@@ -118,9 +132,6 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                       color: Colors.white,
                       size: 90,
                     ),
-                    //backgroundImage: NetworkImage(
-                    //'',
-                    //),
                   ),
                   /*ListTile(
                     leading: Icon(Icons.supervised_user_circle),
@@ -137,7 +148,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                   //Icon(ico)*/
 
                   SizedBox(height: 12),
-                  Text('Leonardo',
+                  Text('customer.',
                       style: TextStyle(fontSize: 28, color: Colors.white)),
                   Text(
                     'Leo_r1089@hotmail.com',
@@ -151,18 +162,18 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
   Widget buildMenuItems(BuildContext context) => Column(
         children: [
           const SizedBox(height: 10),
-          ListTile(
+          /*ListTile(
             leading: const Icon(Icons.home_outlined),
             title: const Text('Home'),
             onTap: () {
               Navigator.pop(context);
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => const Iniciar(),
+                  builder: (context) => Iniciar(token: token),
                 ),
               );
             },
-          ),
+          ),*/
           const SizedBox(height: 20),
           ListTile(
               leading: const Icon(Icons.backpack),
@@ -188,14 +199,4 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
               }),
         ],
       );
-
-  Future<List<Customer>> pegarUsuario() async {
-    var uri = Uri.parse('http://10.0.2.2:3333/showUsuarios');
-    var response = await http.get(uri);
-    if (response.statusCode == 200) {
-      List list = json.decode(response.body);
-      return list.map((json) => Customer.fromJson(json)).toList();
-    }
-    throw Exception('Erro ao carregar!');
-  }
 }

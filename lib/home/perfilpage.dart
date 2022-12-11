@@ -1,27 +1,17 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:loja/home/iniciar.dart';
-import 'package:http/http.dart' as http;
 
 import '../data/users.dart';
 
 class PerfilPage extends StatefulWidget {
-  const PerfilPage({Key? key}) : super(key: key);
-
+  final Customer customer;
+  const PerfilPage({Key? key, required this.customer}) : super(key: key);
   @override
   State<PerfilPage> createState() => _PerfilPageState();
 }
 
 class _PerfilPageState extends State<PerfilPage> {
   // final padding = const EdgeInsets.symmetric(horizontal: 20);
-  late Future<List<Customer>> usuarios;
-
-  @override
-  void initState() {
-    super.initState();
-    usuarios = pegarUsuario();
-  }
-
   late ListTile nome;
 
   bool showSenha = false;
@@ -58,66 +48,43 @@ class _PerfilPageState extends State<PerfilPage> {
           onTap: () {
             FocusScope.of(context).unfocus();
           },
-          child: FutureBuilder<List<Customer>>(
-            future: usuarios,
-            builder: (context, snapshot) {
+          child: ListView(
+            children: [
               const Text(
                 "Editar Perfil",
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-              );
+              ),
               const SizedBox(
                 height: 35,
-              );
-              if (snapshot.hasData) {
-                return ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    Customer usuario = snapshot.data![index];
-                    return ListView(
-                      children: [
-                        nome = ListTile(title: Text(usuario.nome!)),
-                        ListTile(title: Text(usuario.nome!)),
-                      ],
-                    );
-                  },
-                );
-              }
-              /*buildTextField("nome", nome, false);
-              buildTextField("cpf", '', false);
-              buildTextField("endereco", '', false);
-              buildTextField("cidade", '', false);
-              buildTextField("telefone", '', false);
-              buildTextField("senha", '', true);*/
+              ),
+              //NoteDeta noteId: note.id!
+              buildTextField("Nome", widget.customer.nome, false),
+              buildTextField("Cpf", widget.customer.cpf, false),
+              buildTextField("Endereco", widget.customer.endereco, false),
+              buildTextField("Cidade", widget.customer.cidade, false),
+              buildTextField("Telefone", widget.customer.telefone, false),
+              buildTextField("Email", widget.customer.email, false),
+
+              const SizedBox(
+                height: 35,
+              ),
               Row(
                 children: [
-                  Container(
-                    margin:
-                        (const EdgeInsets.only(top: 0, left: 25, right: 25)),
-                    height: 50,
-                    width: 300,
-                    decoration: const BoxDecoration(
-                        color: Color.fromARGB(255, 195, 118, 19),
-                        borderRadius: BorderRadius.all(Radius.circular(32))),
-                    child: TextButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.resolveWith<Color?>((states) {
-                          return const Color.fromARGB(255, 195, 118, 19);
-                        }),
-                      ),
-                      onPressed: () async {},
-                      child: const Center(
-                        child: Text(
-                          'Atualizar',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
+                  OutlinedButton(
+                    //padding: const EdgeInsets.symmetric(horizontal: 50),
+                    //shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    onPressed: () {},
+                    child: const Text(
+                      "Cancelar",
+                      style: TextStyle(
+                          fontSize: 14,
+                          letterSpacing: 2.2,
+                          color: Colors.black),
                     ),
                   ),
                 ],
-              );
-              return Text(snapshot.error.toString());
-            },
+              )
+            ],
           ),
         ),
       ),
@@ -128,7 +95,7 @@ class _PerfilPageState extends State<PerfilPage> {
   Widget buildTextField(
       String labelText, String placeholder, bool isSenhaTextField) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 35.0),
+      padding: const EdgeInsets.only(bottom: 15.0),
       child: TextField(
         obscureText: isSenhaTextField ? showSenha : false,
         decoration: InputDecoration(
@@ -152,19 +119,9 @@ class _PerfilPageState extends State<PerfilPage> {
             hintStyle: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
+              color: Colors.white,
             )),
       ),
     );
-  }
-
-  Future<List<Customer>> pegarUsuario() async {
-    var uri = Uri.parse('http://10.0.2.2:3333/showUsuarios');
-    var response = await http.get(uri);
-    if (response.statusCode == 200) {
-      List list = json.decode(response.body);
-      return list.map((json) => Customer.fromJson(json)).toList();
-    }
-    throw Exception('Erro ao carregar!');
   }
 }

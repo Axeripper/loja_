@@ -3,48 +3,26 @@ import 'package:loja/models/products.dart';
 import '../../home/containts.dart';
 
 class ColorAndSize extends StatelessWidget {
+  final Product product;
   const ColorAndSize({
     Key? key,
     required this.product,
   }) : super(key: key);
-
-  final Product product;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
         Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Text("Color"),
-              Row(
-                children: const <Widget>[
-                  ColorDot(
-                    color: Color.fromARGB(255, 60, 3, 87),
-                    isSelected: true,
-                  ),
-                  ColorDot(color: Color(0xFFF8C078)),
-                  ColorDot(color: Color(0xFFA29B9B)),
-                ],
-              ),
-            ],
-          ),
-        ),
-        Expanded(
           child: RichText(
             text: TextSpan(
-              style: const TextStyle(color: kTextColor),
+              style: const TextStyle(color: Colors.black),
               children: [
-                const TextSpan(text: "Size\n"),
+                const TextSpan(text: "Tamaho:\n"),
                 TextSpan(
-                  text: "${product.size} cm",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline5
-                      ?.copyWith(fontWeight: FontWeight.bold),
-                )
+                    text: "${product.size} cm",
+                    style: Theme.of(context).textTheme.headline5?.copyWith(
+                        color: Colors.black, fontWeight: FontWeight.normal)),
               ],
             ),
           ),

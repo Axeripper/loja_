@@ -1,11 +1,12 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously
-
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:loja/home/cadastrousuarios.dart';
 import 'package:loja/widgets/palatte.dart';
 import 'package:http/http.dart' as http;
-
+import '../data/useridsecuretestorage.dart';
+import '../data/usersecuretestorage.dart';
 import '../widgets/background_image.dart';
 import 'iniciar.dart';
 
@@ -22,7 +23,6 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _senha = TextEditingController();
 
   bool hidePassword = true;
-
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -66,7 +66,8 @@ class _LoginPageState extends State<LoginPage> {
                         style:
                             const TextStyle(color: Colors.white, fontSize: 15),
                         decoration: const InputDecoration(
-                          labelText: "E-mail",
+                          //label: const Text('E-mail'),
+                          labelText: "nome@email.com",
                           labelStyle: TextStyle(color: Colors.white),
                           border: InputBorder.none,
                         ),
@@ -124,12 +125,11 @@ class _LoginPageState extends State<LoginPage> {
                   child: ElevatedButton(
                     onPressed: () async {
                       FocusScopeNode currentFocus = FocusScope.of(context);
-                      //if (_formKey.currentState.validate()) {
-                      bool deuCerto = await login();
+                      Future<bool> deuCerto = login();
                       if (!currentFocus.hasPrimaryFocus) {
                         currentFocus.unfocus();
                       }
-                      if (deuCerto) {
+                      if (await deuCerto) {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
@@ -140,7 +140,6 @@ class _LoginPageState extends State<LoginPage> {
                         _senha.clear();
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       }
-                      //}
                     },
                     child: const Center(
                       child: Text(
@@ -204,7 +203,32 @@ class _LoginPageState extends State<LoginPage> {
     backgroundColor: Colors.redAccent,
   );
 
-  login() async {
+  /*dologin() async {
+    if (_formKey.currentState!.validate()) {
+      var response = await Login.login(_email.text, _senha.text);
+      if (response == 200) {
+        print(jsonDecode(response.body)['token']);
+        return true;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        backgroundColor: Colors.grey,
+        content: Text("Usuario Logado com sucesso!!"),
+        behavior: SnackBarBehavior.floating,
+      ));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.redAccent,
+          content: Text("E-mail ou senha inválidos"),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      //return false;
+    }
+  }*/
+
+  Future<bool> login() async {
+    //SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var url = Uri.parse('http://10.0.2.2:3333/login');
     var response = await http.post(
       url,
@@ -214,7 +238,10 @@ class _LoginPageState extends State<LoginPage> {
       },
     );
     if (response.statusCode == 200) {
+      UserToken.saveToken(_email.text);
+      UserIdToken.saveidToken(response.body);
       print(jsonDecode(response.body)['token']);
+      //await sharedPreferences.setString('token', 'Token $token');
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         backgroundColor: Colors.grey,
         content: Text("Usuario Logado com sucesso!!"),
@@ -234,5 +261,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 }
+
+
 
 //node ace serve --watch

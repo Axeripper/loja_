@@ -24,7 +24,7 @@ export default class ProdutosController {
   }
 
   public async show({request}: HttpContextContract) {
-    const produtoid = request.param('id')
+    const produtoid = request.param('id_produto')
     const produto = await Produto.findOrFail(produtoid)
     return produto
   }

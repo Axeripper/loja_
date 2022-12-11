@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 
 import '../../home/containts.dart';
 
@@ -45,7 +45,7 @@ class _CartCounterState extends State<CartCounter> {
 
   SizedBox buildOutlineButton({IconData? icon, required Function press}) {
     return SizedBox(
-      width: 40,
+      width: 20,
       height: 32,
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
@@ -61,4 +61,4 @@ class _CartCounterState extends State<CartCounter> {
       ),
     );
   }
-}
+}*/

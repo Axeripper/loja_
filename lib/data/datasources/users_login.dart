@@ -1,45 +1,25 @@
-/*import 'package:flutter/material.dart';
-import 'package:loja/data/data_produtos_contants.dart';
-import 'package:loja/home/login.dart';
-import 'package:provider/provider.dart';
-import '../users.dart';
+// ignore_for_file: avoid_print
+import 'dart:convert';
 
-class LoginUsers extends StatelessWidget {
-  var dao = Dao();
-  LoginUsers({super.key});
+import 'package:http/http.dart' as http;
 
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: Stream.fromFuture(dao.getCustomers()),
-        builder: (context, response) {
-          if (!response.hasData) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const  <Widget>[CircularProgressIndicator()],
-              ),
-            );
-          } else if (response.hasError) {
-            return Center(
-              child: Text(response.error),
-            );
-          } else {
-            return MultiProvider(
-              providers: [
-                Provider<List<Customer>>.value(value: response.data)
-              ],
-              child: MaterialApp(
-                title: 'Login Flutter',
-                theme: ThemeData(
-                  brightness: Brightness.dark,
-                  primarySwatch: Colors.orange,
-                  accentColor: Colors.orange
-                ),
-                home: LoginPage(),
-              ),
-            );
-          }
-        });
+class Login {
+  login(String email, String password) async {
+    var url = Uri.parse('http://10.0.2.2:3333/login');
+
+    var response = await http.post(
+      url,
+      body: {
+        'email': email,
+        'password': password,
+      },
+    );
+    if (response.statusCode == 200) {
+      print(jsonDecode(response.body)['token']);
+      return true;
+    } else {
+      //print(jsonDecode(response.body));
+      //return false;
+    }
   }
-}*/
+}

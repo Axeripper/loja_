@@ -7,8 +7,6 @@ class ProductApi {
   static Future<List<Product>> pegarproduto() async {
     var uri = Uri.parse('http://10.0.2.2:3333/showall');
     var response = await http.get(uri);
-
-    //Map data = jsonDecode(response.body);
     // ignore: avoid_print
     print("response${jsonDecode(response.body)}");
     List tempList = [];
@@ -16,6 +14,8 @@ class ProductApi {
     for (var v in data) {
       tempList.add(v);
     }
+    // ignore: avoid_print
+    print(tempList);
     return Product.productsFromSnapshot(tempList);
   }
 }

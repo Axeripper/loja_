@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../../home/iniciar.dart';
 import '../../models/products.dart';
 
 class PesquisaPage extends SearchDelegate<String> {
@@ -66,7 +65,7 @@ class PesquisaPage extends SearchDelegate<String> {
                   trailing: Text('R\$${snapshot.data![index]['preco']}'),
                   onTap: () {
                     query = snapshot.data![index]['id'];
-                    const NavigationDrawer();
+                    //DetailsScreen(product: product);
                   },
                 );
               },
@@ -84,9 +83,6 @@ class PesquisaPage extends SearchDelegate<String> {
 
   Future<List> sugestoes() async {
     var url = Uri.parse('http://10.0.2.2:3333/showprodutos?search=$query');
-    /*Map<String, String> headers = {
-      'Authorization': 'Token ',
-    };*/
     var response = await http.get(url);
     if (response.statusCode == 200) {
       return json.decode(response.body).map((produto) => produto).toList();

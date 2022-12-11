@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:loja/details/components/product_title_with_image.dart';
 import 'package:loja/home/containts.dart';
 import 'package:loja/models/products.dart';
+import '../../data/users.dart';
 import 'add_to_cart.dart';
-import 'cart_counter.dart';
 import 'color_and_size.dart';
 import 'description.dart';
 
 class Body extends StatelessWidget {
   final Product product;
-  const Body({Key? key, required this.product}) : super(key: key);
+  final Customer customer;
+  const Body({Key? key, required this.product, required this.customer})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +42,10 @@ class Body extends StatelessWidget {
                       ColorAndSize(
                         product: product,
                       ),
-                      const SizedBox(height: kDefaultPaddin / 2),
-                      const CartCounter(),
+                      const SizedBox(height: kDefaultPaddin / 3),
+                      // CartCounter(),
                       Description(product: product),
-                      AddToCart(product: product)
+                      AddToCart(product: product, customer: customer)
                     ],
                   ),
                 ),

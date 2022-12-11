@@ -28,13 +28,13 @@ class ItemCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Hero(
-                tag: "${product.id}",
+                tag: "${product.idproduto}",
                 child: Image.asset(product.image),
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: kDefaultPaddin / 4),
+            padding: const EdgeInsets.symmetric(vertical: kDefaultPaddin / 50),
             child: Text(
               product.nome,
               style: const TextStyle(color: kTextLightColor),

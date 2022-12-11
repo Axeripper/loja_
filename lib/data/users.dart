@@ -1,39 +1,39 @@
 class Customer {
-  int? id;
-  String? nome, cpf, endereco, cidade, telefone, email, password;
+  final int iduser;
+  final String nome, cpf, endereco, cidade, telefone, email;
 
   Customer(
-      {this.id,
-      this.nome,
-      this.cpf,
-      this.endereco,
-      this.cidade,
-      this.telefone,
-      this.email,
-      this.password});
+      {required this.iduser,
+      required this.nome,
+      required this.cpf,
+      required this.endereco,
+      required this.cidade,
+      required this.telefone,
+      required this.email
+      // required this.password
+      });
 
-  Customer.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    nome = json['nome'];
-    cpf = json['cpf'];
-    endereco = json['endereco'];
-    cidade = json['cidade'];
-    telefone = json['telefone'];
-    email = json['email'];
-    password = json['password'];
+  factory Customer.fromJson(dynamic json) {
+    return Customer(
+      iduser: json['id'] as int,
+      nome: json['nome'] as String,
+      cpf: json['cpf'] as String,
+      endereco: json['endereco'] as String,
+      cidade: json['cidade'] as String,
+      telefone: json['telefone'] as String,
+      email: json['email'] as String,
+      //password: json['password'] as String
+    );
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['nome'] = nome;
-    data['cpf'] = cpf;
-    data['endereco'] = endereco;
-    data['cidade'] = cidade;
-    data['telefone'] = telefone;
-    data['email'] = email;
-    data['password'] = password;
+  static List<Customer> productsFromSnapshot(List productSnapshot) {
+    return productSnapshot.map((data) {
+      return Customer.fromJson(data);
+    }).toList();
+  }
 
-    return data;
+  @override
+  String toString() {
+    return 'Customer {id: $iduser, nome: $nome, cpf: $cpf, endereco: $endereco, cidade: $cidade, telefone: $telefone, email: $email}';
   }
 }
