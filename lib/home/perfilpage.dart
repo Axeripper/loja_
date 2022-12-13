@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loja/home/iniciar.dart';
 
-import '../data/users.dart';
+import '../data/datasources/users.dart';
 
 class PerfilPage extends StatefulWidget {
   final Customer customer;

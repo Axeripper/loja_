@@ -39,6 +39,14 @@ export default class ProdutosController {
     return produto
   }
 
+  public async showvendas({request}: HttpContextContract) {
+    const produto = await Produto.query().innerJoin('vendas','vendas.id_produto', 'produtos.id').innerJoin('users', 'users.id', 'vendas.id_user').whereRaw('MATCH(email) AGAINST(?)',
+    request.input('search')
+    )
+    return produto
+  }
+
+  //vendas.nome, vendas.size, vendas.descricao,vendas.color, vendasvendas.tipo, vendas.image, vendas.preco
   public async upload({request, response}: HttpContextContract){
     const files = request.allFiles()
 

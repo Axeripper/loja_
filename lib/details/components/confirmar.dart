@@ -2,14 +2,12 @@
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:loja/data/users.dart';
+import 'package:loja/data/datasources/users.dart';
 import 'package:loja/home/iniciar.dart';
 import 'package:http/http.dart' as http;
 import 'package:loja/models/products.dart';
 
 class Confirmar extends StatefulWidget {
-  //final idproduto;
-  //final idUser;
   final Customer customer;
   final Product product;
   const Confirmar({
@@ -38,8 +36,8 @@ class _ConfirmarState extends State<Confirmar> {
   final TextEditingController _vencimento = TextEditingController();
 
   //late final int idUser = widget.customer.iduser;
-  late final idproduto = widget.product.idproduto.toString();
-  late final iduser = widget.customer.iduser.toString();
+  late final String idproduto = widget.product.idproduto.toString();
+  late final String iduser = widget.customer.iduser.toString();
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +55,13 @@ class _ConfirmarState extends State<Confirmar> {
               children: [
                 const SizedBox(
                   height: 120,
+                ),
+                IconButton(
+                  /*Image.asset(
+                  'assets/images/seta.png',
+                  color: Colors.white,*/
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(Icons.arrow_back),
                 ),
                 /*Column(
                   children: <Widget>[
@@ -78,6 +83,7 @@ class _ConfirmarState extends State<Confirmar> {
                   child: TextFormField(
                     controller: _nome,
                     autofocus: true,
+                    textInputAction: TextInputAction.next,
                     style: const TextStyle(color: Colors.orange, fontSize: 14),
                     decoration: const InputDecoration(
                       labelText: "Nome:",
@@ -104,6 +110,7 @@ class _ConfirmarState extends State<Confirmar> {
                   child: TextFormField(
                     controller: _numero,
                     autofocus: true,
+                    textInputAction: TextInputAction.next,
                     style: const TextStyle(color: Colors.orange, fontSize: 14),
                     decoration: const InputDecoration(
                       labelText: "Numero do Cartão:",
@@ -130,6 +137,7 @@ class _ConfirmarState extends State<Confirmar> {
                   child: TextFormField(
                     controller: _agencia,
                     autofocus: true,
+                    textInputAction: TextInputAction.next,
                     style: const TextStyle(color: Colors.orange, fontSize: 14),
                     decoration: const InputDecoration(
                       labelText: "Agência:",
@@ -156,6 +164,8 @@ class _ConfirmarState extends State<Confirmar> {
                   child: TextFormField(
                     controller: _conta,
                     autofocus: true,
+                    //keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
                     style: const TextStyle(color: Colors.orange, fontSize: 14),
                     decoration: const InputDecoration(
                       labelText: "Conta:",
@@ -181,6 +191,7 @@ class _ConfirmarState extends State<Confirmar> {
                   child: TextFormField(
                     controller: _codigo,
                     autofocus: true,
+                    textInputAction: TextInputAction.next,
                     style: const TextStyle(color: Colors.orange, fontSize: 14),
                     decoration: const InputDecoration(
                       labelText: "Código:",
@@ -207,6 +218,8 @@ class _ConfirmarState extends State<Confirmar> {
                   child: TextFormField(
                     controller: _vencimento,
                     autofocus: true,
+                    textInputAction: TextInputAction.done,
+                    onFieldSubmitted: (value) => '',
                     style: const TextStyle(color: Colors.orange, fontSize: 14),
                     decoration: const InputDecoration(
                       labelText: "Válidade:",

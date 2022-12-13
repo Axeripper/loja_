@@ -266,27 +266,6 @@ class _CadastroState extends State<Cadastro> {
                       }),
                 ),
                 const Divider(),
-                /*ConstrainedBox(
-                  constraints: const BoxConstraints.tightFor(
-                    width: 100,
-                    height: 20,
-                  ),
-                  child: TextButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.resolveWith<Color?>((states) {
-                        return const Color.fromARGB(255, 195, 118, 19);
-                      }),
-                    ),
-                    onPressed: () async {},
-                    child: const Center(
-                      child: Text(
-                        'Entrar',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ),*/
               ],
             ),
           ),

@@ -2,11 +2,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../../models/products.dart';
-
 class PesquisaPage extends SearchDelegate<String> {
   String get searchFiledLabel => 'ex: nome ou marca';
-  late final Product product;
+  //late final Product product;
+  //late final Customer customer;
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -64,8 +63,11 @@ class PesquisaPage extends SearchDelegate<String> {
                   subtitle: Text(snapshot.data![index]['tipo']),
                   trailing: Text('R\$${snapshot.data![index]['preco']}'),
                   onTap: () {
-                    query = snapshot.data![index]['id'];
-                    //DetailsScreen(product: product);
+                    //query = snapshot.data![index]['id'];
+                    /*DetailsScreen(
+                      product: snapshot.data![index],
+                      customer: snapshot.data![index],
+                    );*/
                   },
                 );
               },

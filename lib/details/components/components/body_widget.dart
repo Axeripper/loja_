@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:loja/details/components/components/details_screen.dart';
 import 'package:loja/home/containts.dart';
 import 'package:loja/models/products.dart';
-import '../../../data/services/pegarusuarioapi.dart';
-import '../../../data/users.dart';
+import '../../../data/datasources/pegarusuarioapi.dart';
+import '../../../data/datasources/users.dart';
 import '../../../models/products.api.dart';
 import 'item_card.dart';
 
@@ -45,16 +45,6 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Icon(Icons.store),
-            SizedBox(width: 10),
-            Text('loja')
-          ],
-        ),
-      ),*/
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : GridView.builder(

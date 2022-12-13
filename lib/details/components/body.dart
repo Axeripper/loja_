@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loja/details/components/product_title_with_image.dart';
 import 'package:loja/home/containts.dart';
 import 'package:loja/models/products.dart';
-import '../../data/users.dart';
+import '../../data/datasources/users.dart';
 import 'add_to_cart.dart';
 import 'color_and_size.dart';
 import 'description.dart';

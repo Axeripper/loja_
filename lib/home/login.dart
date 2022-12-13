@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:loja/home/cadastrousuarios.dart';
 import 'package:loja/widgets/palatte.dart';
 import 'package:http/http.dart' as http;
-import '../data/useridsecuretestorage.dart';
-import '../data/usersecuretestorage.dart';
+import '../data/datasources/useridsecuretestorage.dart';
+import '../data/datasources/usersecuretestorage.dart';
 import '../widgets/background_image.dart';
 import 'iniciar.dart';
 
@@ -62,6 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: TextFormField(
                         controller: _email,
                         autofocus: true,
+                        textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.emailAddress,
                         style:
                             const TextStyle(color: Colors.white, fontSize: 15),
@@ -84,7 +85,9 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(
                   height: 10,
                 ),
-                const Divider(),
+                const Divider(
+                  color: Colors.transparent,
+                ),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.grey[600]?.withOpacity(0.5),
@@ -93,12 +96,15 @@ class _LoginPageState extends State<LoginPage> {
                   child: TextFormField(
                     //autofocus: true,
                     obscureText: hidePassword,
+                    textInputAction: TextInputAction.done,
                     controller: _senha,
                     keyboardType: TextInputType.visiblePassword,
                     style: const TextStyle(color: Colors.white, fontSize: 15),
                     decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
+                      //border: const OutlineInputBorder(),
                       labelText: "Senha",
+                      labelStyle: const TextStyle(color: Colors.white),
+                      border: InputBorder.none,
                       suffixIcon: IconButton(
                           icon: Icon(hidePassword
                               ? Icons.visibility_off
@@ -114,7 +120,9 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(
                   height: 10,
                 ),
-                const Divider(),
+                const Divider(
+                  color: Colors.transparent,
+                ),
                 Container(
                   margin: (const EdgeInsets.only(top: 10, left: 25, right: 25)),
                   height: 50,

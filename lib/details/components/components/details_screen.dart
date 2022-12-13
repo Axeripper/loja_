@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loja/details/components/body.dart';
 import 'package:loja/models/products.dart';
 
-import '../../../data/users.dart';
+import '../../../data/datasources/users.dart';
 import '../pesquisa.dart';
 
 class DetailsScreen extends StatelessWidget {
@@ -14,7 +14,7 @@ class DetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     product;
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: const Color.fromARGB(255, 195, 118, 19),
       appBar: buildAppBar(context),
       body: Body(
         product: product,
@@ -25,14 +25,15 @@ class DetailsScreen extends StatelessWidget {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.blue,
+      backgroundColor: const Color.fromARGB(255, 195, 118, 19),
       elevation: 1,
       leading: IconButton(
-        icon: Image.asset(
+        /*icon: Image.asset(
           'assets/images/seta.png',
           color: Colors.white,
-        ),
+        ),*/
         onPressed: () => Navigator.pop(context),
+        icon: const Icon(Icons.arrow_back),
       ),
       actions: <Widget>[
         IconButton(
