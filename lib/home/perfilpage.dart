@@ -11,7 +11,6 @@ class PerfilPage extends StatefulWidget {
 }
 
 class _PerfilPageState extends State<PerfilPage> {
-  // final padding = const EdgeInsets.symmetric(horizontal: 20);
   late ListTile nome;
 
   bool showSenha = false;
@@ -57,14 +56,12 @@ class _PerfilPageState extends State<PerfilPage> {
               const SizedBox(
                 height: 35,
               ),
-              //NoteDeta noteId: note.id!
               buildTextField("Nome", widget.customer.nome, false),
               buildTextField("Cpf", widget.customer.cpf, false),
               buildTextField("Endereco", widget.customer.endereco, false),
               buildTextField("Cidade", widget.customer.cidade, false),
               buildTextField("Telefone", widget.customer.telefone, false),
               buildTextField("Email", widget.customer.email, false),
-
               const SizedBox(
                 height: 35,
               ),
@@ -79,7 +76,7 @@ class _PerfilPageState extends State<PerfilPage> {
                       style: TextStyle(
                           fontSize: 14,
                           letterSpacing: 2.2,
-                          color: Colors.black),
+                          color: Colors.orange),
                     ),
                   ),
                 ],

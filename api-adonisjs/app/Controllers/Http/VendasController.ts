@@ -11,11 +11,11 @@ export default class UsersController {
   public async create({}: HttpContextContract) {}
 
   public async storevendas({request}: HttpContextContract) {
-    const body = request.only(['id_user','id_produto','nome','numero', 'agencia', 'conta', 'codigo', 'validade'])
+    const body = request.only(['id_user','id_produto','nomecartao','numero', 'agencia', 'conta', 'codigo', 'validade'])
     const venda = await Venda.create({
       id_user: body.id_user,
       id_produto: body.id_produto,
-      nome: body.nome,
+      nomecartao: body.nomecartao,
       numero: body.numero,
       agencia: body.agencia,
       conta: body.conta,

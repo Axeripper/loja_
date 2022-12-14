@@ -285,7 +285,7 @@ class _CadastroState extends State<Cadastro> {
   Future<bool> cadastro() async {
     var url = Uri.parse('http://10.0.2.2:3333/cadastro');
     var resposta = await http.post(url, body: {
-      'nome': _nome.text,
+      'nomeuser': _nome.text,
       'cpf': _cpf.text,
       'endereco': _endereco.text,
       'cidade': _cidade.text,

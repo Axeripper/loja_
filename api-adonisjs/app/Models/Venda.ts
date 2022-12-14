@@ -12,7 +12,7 @@ export default class Venda extends BaseModel {
   public id_produto: String
   
   @column()
-  public nome: String 
+  public nomecartao: String 
 
   @column()
   public numero: String 

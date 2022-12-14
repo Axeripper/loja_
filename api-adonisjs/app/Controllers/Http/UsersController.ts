@@ -11,9 +11,9 @@ export default class UsersController {
   public async create({}: HttpContextContract) {}
 
   public async store({request}: HttpContextContract) {
-    const body = request.only(['nome', 'cpf', 'endereco', 'cidade', 'telefone', 'email', 'password'])
+    const body = request.only(['nomeuser', 'cpf', 'endereco', 'cidade', 'telefone', 'email', 'password'])
     const user = await User.create({
-      nome: body.nome,
+      nomeuser: body.nomeuser,
       cpf: body.cpf,
       endereco: body.endereco,
       cidade: body.cidade,
@@ -54,7 +54,7 @@ export default class UsersController {
   public async edit({}: HttpContextContract) {}
 
   public async update({request}: HttpContextContract) {
-    const body = request.only(['nome', 'cpf', 'endereco', 'cidade', 'telefone', 'password'])
+    const body = request.only(['nomeuser', 'cpf', 'endereco', 'cidade', 'telefone', 'password'])
     const userid = request.param('id')
     const user = await User.findOrFail(userid)
     await user.merge(body).save()

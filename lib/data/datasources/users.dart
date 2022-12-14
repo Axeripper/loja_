@@ -16,7 +16,7 @@ class Customer {
   factory Customer.fromJson(dynamic json) {
     return Customer(
       iduser: json['id'] as int,
-      nome: json['nome'] as String,
+      nome: json['nomeuser'] as String,
       cpf: json['cpf'] as String,
       endereco: json['endereco'] as String,
       cidade: json['cidade'] as String,
@@ -34,6 +34,6 @@ class Customer {
 
   @override
   String toString() {
-    return 'Customer {id: $iduser, nome: $nome, cpf: $cpf, endereco: $endereco, cidade: $cidade, telefone: $telefone, email: $email}';
+    return 'Customer {id: $iduser, nomeuser: $nome, cpf: $cpf, endereco: $endereco, cidade: $cidade, telefone: $telefone, email: $email}';
   }
 }

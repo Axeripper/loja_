@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_typing_uninitialized_variables, avoid_print, use_build_context_synchronously
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -7,20 +7,15 @@ import 'package:loja/home/iniciar.dart';
 import 'package:http/http.dart' as http;
 import 'package:loja/models/products.dart';
 
-class Confirmar extends StatefulWidget {
+class Confirmar extends StatelessWidget {
   final Customer customer;
   final Product product;
-  const Confirmar({
+  Confirmar({
     Key? key,
     required this.customer,
     required this.product,
   }) : super(key: key);
 
-  @override
-  State<Confirmar> createState() => _ConfirmarState();
-}
-
-class _ConfirmarState extends State<Confirmar> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _nome = TextEditingController();
@@ -36,13 +31,13 @@ class _ConfirmarState extends State<Confirmar> {
   final TextEditingController _vencimento = TextEditingController();
 
   //late final int idUser = widget.customer.iduser;
-  late final String idproduto = widget.product.idproduto.toString();
-  late final String iduser = widget.customer.iduser.toString();
+  late final int idproduto = product.idproduto;
+
+  late final int iduser = customer.iduser;
 
   @override
   Widget build(BuildContext context) {
-    // ignore: avoid_print
-    print(idproduto);
+    print(product.idproduto);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
@@ -57,21 +52,9 @@ class _ConfirmarState extends State<Confirmar> {
                   height: 120,
                 ),
                 IconButton(
-                  /*Image.asset(
-                  'assets/images/seta.png',
-                  color: Colors.white,*/
                   onPressed: () => Navigator.pop(context),
                   icon: const Icon(Icons.arrow_back),
                 ),
-                /*Column(
-                  children: <Widget>[
-                    SizedBox(
-                      width: 108,
-                      height: 108,
-                      child: Image.asset("assets/images/logo.png"),
-                    )
-                  ],
-                ),*/
                 const Divider(
                   color: Colors.transparent,
                 ),
@@ -223,6 +206,7 @@ class _ConfirmarState extends State<Confirmar> {
                     style: const TextStyle(color: Colors.orange, fontSize: 14),
                     decoration: const InputDecoration(
                       labelText: "Válidade:",
+                      helperText: 'DD/MM/YYYY',
                       icon: Icon(Icons.calendar_month),
                       labelStyle: TextStyle(color: Colors.orange),
                       border: InputBorder.none,
@@ -261,7 +245,6 @@ class _ConfirmarState extends State<Confirmar> {
                           currentFocus.unfocus();
                         }
                         if (deuCerto) {
-                          // ignore: use_build_context_synchronously
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
@@ -269,8 +252,6 @@ class _ConfirmarState extends State<Confirmar> {
                             ),
                           );
                         } else {
-                          //_senha.clear();
-                          // ignore: use_build_context_synchronously
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         }
                       }),
@@ -285,7 +266,7 @@ class _ConfirmarState extends State<Confirmar> {
 
   final snackBar = const SnackBar(
     content: Text(
-      'e-mail ou senha são invalidos',
+      'Informações erradas!',
       textAlign: TextAlign.center,
     ),
     backgroundColor: Colors.redAccent,
@@ -293,22 +274,24 @@ class _ConfirmarState extends State<Confirmar> {
 
   Future<bool> confirmar() async {
     var url = Uri.parse('http://10.0.2.2:3333/storevendas');
-    var resposta = await http.post(url, body: {
-      'users.id_user': iduser,
-      'produtos.id_produto': idproduto,
-      'nome': _nome.text,
-      'numero': _numero.text,
-      'agencia': _agencia.text,
-      'conta': _conta.text,
-      'codigo': _codigo.text,
-      'validade': _vencimento.text,
-    });
+    var resposta = await http.post(url,
+        headers: {
+          "content-type": "application/json",
+        },
+        body: json.encode({
+          'id_user': iduser,
+          'id_produto': idproduto,
+          'nomecartao': _nome.text,
+          'numero': _numero.text,
+          'agencia': _agencia.text,
+          'conta': _conta.text,
+          'codigo': _codigo.text,
+          'validade': _vencimento.text,
+        }));
     if (resposta.statusCode == 200) {
-      // ignore: avoid_print
       print(jsonDecode(resposta.body)['token']);
       return true;
     } else {
-      // ignore: avoid_print
       print(jsonDecode(resposta.body));
       return false;
     }
