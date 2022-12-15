@@ -65,7 +65,7 @@ class _PerfilPageState extends State<PerfilPage> {
               const SizedBox(
                 height: 35,
               ),
-              Row(
+              /*Row(
                 children: [
                   OutlinedButton(
                     //padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -80,7 +80,7 @@ class _PerfilPageState extends State<PerfilPage> {
                     ),
                   ),
                 ],
-              )
+              )*/
             ],
           ),
         ),

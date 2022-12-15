@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:loja/models/products.dart';
+
+import 'components/details_screen.dart';
 
 class PesquisaPage extends SearchDelegate<String> {
   String get searchFiledLabel => 'ex: nome ou marca';
@@ -64,10 +67,10 @@ class PesquisaPage extends SearchDelegate<String> {
                   trailing: Text('R\$${snapshot.data![index]['preco']}'),
                   onTap: () {
                     //query = snapshot.data![index]['id'];
-                    /*DetailsScreen(
+                    DetailsScreen(
                       product: snapshot.data![index],
                       customer: snapshot.data![index],
-                    );*/
+                    );
                   },
                 );
               },
@@ -83,7 +86,7 @@ class PesquisaPage extends SearchDelegate<String> {
         });
   }
 
-  Future<List> sugestoes() async {
+  Future<List<Product>> sugestoes() async {
     var url = Uri.parse('http://10.0.2.2:3333/showprodutos?search=$query');
     var response = await http.get(url);
     if (response.statusCode == 200) {

@@ -7,15 +7,20 @@ import 'package:loja/home/iniciar.dart';
 import 'package:http/http.dart' as http;
 import 'package:loja/models/products.dart';
 
-class Confirmar extends StatelessWidget {
+class Confirmar extends StatefulWidget {
   final Customer customer;
   final Product product;
-  Confirmar({
+  const Confirmar({
     Key? key,
     required this.customer,
     required this.product,
   }) : super(key: key);
 
+  @override
+  State<Confirmar> createState() => _ConfirmarState();
+}
+
+class _ConfirmarState extends State<Confirmar> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _nome = TextEditingController();
@@ -31,16 +36,31 @@ class Confirmar extends StatelessWidget {
   final TextEditingController _vencimento = TextEditingController();
 
   //late final int idUser = widget.customer.iduser;
-  late final int idproduto = product.idproduto;
+  late final int idproduto = widget.product.idproduto;
 
-  late final int iduser = customer.iduser;
+  late final int iduser = widget.customer.iduser;
 
   @override
   Widget build(BuildContext context) {
-    print(product.idproduto);
+    print(widget.product.idproduto);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 1,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return const Iniciar();
+            }));
+          },
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(
@@ -48,13 +68,7 @@ class Confirmar extends StatelessWidget {
             key: _formKey,
             child: Column(
               children: [
-                const SizedBox(
-                  height: 120,
-                ),
-                IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.arrow_back),
-                ),
+                const SizedBox(height: 5),
                 const Divider(
                   color: Colors.transparent,
                 ),
@@ -152,6 +166,7 @@ class Confirmar extends StatelessWidget {
                     style: const TextStyle(color: Colors.orange, fontSize: 14),
                     decoration: const InputDecoration(
                       labelText: "Conta:",
+                      icon: Icon(Icons.payment),
                       labelStyle: TextStyle(color: Colors.orange),
                       border: InputBorder.none,
                     ),
@@ -178,7 +193,7 @@ class Confirmar extends StatelessWidget {
                     style: const TextStyle(color: Colors.orange, fontSize: 14),
                     decoration: const InputDecoration(
                       labelText: "Código:",
-                      //icon: Icon(Icons.cv),
+                      icon: Icon(Icons.payment),
                       labelStyle: TextStyle(color: Colors.orange),
                       border: InputBorder.none,
                     ),
@@ -206,7 +221,6 @@ class Confirmar extends StatelessWidget {
                     style: const TextStyle(color: Colors.orange, fontSize: 14),
                     decoration: const InputDecoration(
                       labelText: "Válidade:",
-                      helperText: 'DD/MM/YYYY',
                       icon: Icon(Icons.calendar_month),
                       labelStyle: TextStyle(color: Colors.orange),
                       border: InputBorder.none,
@@ -290,6 +304,11 @@ class Confirmar extends StatelessWidget {
         }));
     if (resposta.statusCode == 200) {
       print(jsonDecode(resposta.body)['token']);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        backgroundColor: Colors.grey,
+        content: Text("Produto comprado com sucesso!!"),
+        behavior: SnackBarBehavior.floating,
+      ));
       return true;
     } else {
       print(jsonDecode(resposta.body));

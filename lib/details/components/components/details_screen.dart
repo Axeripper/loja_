@@ -28,10 +28,6 @@ class DetailsScreen extends StatelessWidget {
       backgroundColor: const Color.fromARGB(255, 195, 118, 19),
       elevation: 1,
       leading: IconButton(
-        /*icon: Image.asset(
-          'assets/images/seta.png',
-          color: Colors.white,
-        ),*/
         onPressed: () => Navigator.pop(context),
         icon: const Icon(Icons.arrow_back),
       ),

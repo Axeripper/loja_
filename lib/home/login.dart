@@ -211,32 +211,7 @@ class _LoginPageState extends State<LoginPage> {
     backgroundColor: Colors.redAccent,
   );
 
-  /*dologin() async {
-    if (_formKey.currentState!.validate()) {
-      var response = await Login.login(_email.text, _senha.text);
-      if (response == 200) {
-        print(jsonDecode(response.body)['token']);
-        return true;
-      }
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        backgroundColor: Colors.grey,
-        content: Text("Usuario Logado com sucesso!!"),
-        behavior: SnackBarBehavior.floating,
-      ));
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.redAccent,
-          content: Text("E-mail ou senha inválidos"),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-      //return false;
-    }
-  }*/
-
   Future<bool> login() async {
-    //SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var url = Uri.parse('http://10.0.2.2:3333/login');
     var response = await http.post(
       url,
@@ -249,7 +224,6 @@ class _LoginPageState extends State<LoginPage> {
       UserToken.saveToken(_email.text);
       UserIdToken.saveidToken(response.body);
       print(jsonDecode(response.body)['token']);
-      //await sharedPreferences.setString('token', 'Token $token');
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         backgroundColor: Colors.grey,
         content: Text("Usuario Logado com sucesso!!"),
@@ -257,7 +231,6 @@ class _LoginPageState extends State<LoginPage> {
       ));
       return true;
     } else {
-      //print(jsonDecode(response.body));
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           backgroundColor: Colors.redAccent,

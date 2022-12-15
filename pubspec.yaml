@@ -30,12 +30,9 @@ flutter:
   assets:
     - assets/images/inicial.png
     - assets/images/logo.png
-    - assets/images/search.png
     - assets/images/bateria.png
-    - assets/images/seta.png
-    - assets/images/carrinho.png
     - assets/images/guitarra.png
-    - assets/images/guitarra2.png
+    - assets/images/dean.png
     - assets/images/bateria2.png
     - assets/images/conga.png
     - assets/images/teclado.png

@@ -6,6 +6,7 @@ import 'package:loja/home/login.dart';
 import 'package:loja/home/meuspedidos.dart';
 import 'package:loja/home/perfilpage.dart';
 import 'package:loja/home/containts.dart';
+import 'package:loja/home/sobre.dart';
 import '../data/datasources/pegarusuarioapi.dart';
 import '../data/datasources/users.dart';
 import '../models/products.dart';
@@ -49,16 +50,6 @@ class _IniciarState extends State<Iniciar> {
         drawer: const NavigationDrawer(),
       );
 }
-
-/*void selectedItem(BuildContext context, int index) {
-  switch (index) {
-    case 0:
-      Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => const PerfilPage()),
-      );
-      break;
-  }
-}*/
 
 Widget buildMenuItem({
   required String text,
@@ -125,7 +116,6 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
       );
 
   Widget buildHeader(BuildContext context) => Material(
-        //color:  Color.fromARGB(255, 195, 118, 19)
         child: InkWell(
             onTap: () {
               Navigator.pop(context);
@@ -152,22 +142,8 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                       size: 90,
                     ),
                   ),
-                  /*ListTile(
-                    leading: Icon(Icons.supervised_user_circle),
-                    //title: Text('Home'),
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const Iniciar(),
-                        ),
-                      );
-                    },
-                  ),
-                  //Icon(ico)*/
-
                   SizedBox(height: 12),
-                  Text('customer.',
+                  Text('leonardo',
                       style: TextStyle(fontSize: 28, color: Colors.white)),
                   Text(
                     'Leo_r1089@hotmail.com',
@@ -180,19 +156,6 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
 
   Widget buildMenuItems(BuildContext context) => Column(
         children: [
-          const SizedBox(height: 10),
-          /*ListTile(
-            leading: const Icon(Icons.home_outlined),
-            title: const Text('Home'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => Iniciar(token: token),
-                ),
-              );
-            },
-          ),*/
           const SizedBox(height: 20),
           ListTile(
               leading: const Icon(Icons.backpack),
@@ -203,21 +166,24 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => MeusPedidos(
-                        product: product.first, customer: customer.first),
+                        product: product.last, customer: customer.first),
                   ),
                 );
               }),
           const SizedBox(height: 20),
           ListTile(
               leading: const Icon(Icons.help_sharp),
-              title: const Text('Ajuda'),
-              onTap: () {}),
-          const SizedBox(height: 200),
+              title: const Text('Sobre'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const Sobre()));
+              }),
+          const SizedBox(height: 230),
           ListTile(
               leading: const Icon(Icons.exit_to_app),
               title: const Text('Sair'),
               onTap: () async {
-                //_close();
                 Navigator.pop(context);
                 Navigator.of(context).push(
                   MaterialPageRoute(
@@ -225,6 +191,8 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                   ),
                 );
               }),
+          const SizedBox(height: 50),
+          const Text('Versão 14.0.1.1'),
         ],
       );
 }
